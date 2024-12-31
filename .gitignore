@@ -1,0 +1,11 @@
+# directories
+node_modules
+
+# files
+.env  
+fly.toml
+Dockerfile
+.dockerignore
+STATUS_CODES.json
+CHECK_LIST.md
+debug.log
