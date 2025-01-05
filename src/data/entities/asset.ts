@@ -35,8 +35,9 @@ export class Asset extends Model<IAsset> {
   description!: string;
 
   @Column({
-    type: DataType.FLOAT,
+    type: DataType.DECIMAL(10, 2),
     allowNull: false,
+    defaultValue: 0,
   })
   value!: number;
 

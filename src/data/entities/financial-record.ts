@@ -40,8 +40,9 @@ export class FinancialRecord extends Model<IFinancialRecord> {
   description!: string;
 
   @Column({
-    type: DataType.FLOAT,
+    type: DataType.DECIMAL(10, 2),
     allowNull: false,
+    defaultValue: 0,
   })
   amount!: number;
 
