@@ -59,12 +59,7 @@ export class CategoriesController {
       const categories = await categoryUseCase.getAll();
       const categoriesDTO = categoryMapper.toDTOs(categories);
 
-      res.json({
-        data: categoriesDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(categoriesDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,

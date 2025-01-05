@@ -61,12 +61,7 @@ export class FinancialRecordsController {
       const financialRecordesDTO =
         financialRecordMapper.toDTOs(financialRecordes);
 
-      res.json({
-        data: financialRecordesDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(financialRecordesDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,

@@ -5,7 +5,6 @@
  */
 
 import { Sequelize } from "sequelize-typescript";
-import { Category } from "../../../data/entities/category";
 
 import * as dotenv from "dotenv";
 import { User } from "../../../data/entities/user";
@@ -16,6 +15,7 @@ import { Asset } from "../../../data/entities/asset";
 import { Attachment } from "../../../data/entities/attachment";
 import { FinancialRecord } from "../../../data/entities/financial-record";
 import { MeetingMinute } from "../../../data/entities/meeting-minute";
+import { Category } from "../../../data/entities/category";
 
 dotenv.config();
 

@@ -59,12 +59,7 @@ export class AssetsController {
       const assetes = await assetUseCase.getAll();
       const assetesDTO = assetMapper.toDTOs(assetes);
 
-      res.json({
-        data: assetesDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(assetesDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,

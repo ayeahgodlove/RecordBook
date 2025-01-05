@@ -58,12 +58,7 @@ export class MeetingMinutsController {
       const meetingMinutees = await meetingMinuteUseCase.getAll();
       const meetingMinuteesDTO = meetingMinuteMapper.toDTOs(meetingMinutees);
 
-      res.json({
-        data: meetingMinuteesDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(meetingMinuteesDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,

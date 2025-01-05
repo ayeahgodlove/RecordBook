@@ -10,22 +10,16 @@ export class CategoryRequestDto {
   @Length(4, 25)
   name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  description: string;
 
   constructor(data: ICategory) {
     this.name = data.name;
-    this.description = data.description;
   }
 
   toData(): ICategory {
     return {
       ...emptyCategory,
       id: nanoid(10),
-      slug:  slugify(this.name, {lower: true, replacement: "-"}),
       name: this.name,
-      description: this.description,
     };
   }
 
@@ -33,8 +27,6 @@ export class CategoryRequestDto {
     return {
       id: data.id,
       name: data.name,
-      slug: data.slug,
-      description: data.description,
     }
   }
 }

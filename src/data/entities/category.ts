@@ -19,17 +19,4 @@ export class Category extends Model<ICategory> {
     unique: true,
   })
   name!: string;
-
-  @Column({
-    type: DataType.STRING(128),
-    allowNull: false,
-    unique: true,
-  })
-  slug!: string;
-
-  @Column({
-    type: DataType.TEXT,
-    allowNull: false,
-  })
-  description!: string;
 }
