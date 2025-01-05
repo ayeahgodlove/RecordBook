@@ -90,8 +90,6 @@ db.connection()
         .use(authz_middleware_1.default.authenticate("session"))
         .use(authz_middleware_1.default.session());
     app.use(error_middleware_1.errorHandler);
-    // authentication
-    app.use("/auth", auth_route_1.authRoutes);
     app.get("/api", (req, res) => {
         res.send("Express + TypeScript Server");
     });
@@ -109,6 +107,8 @@ db.connection()
     app.use("/api/uploads", upload_route_1.default);
     // middleware interceptions
     app.use(not_found_middleware_1.notFoundHandler);
+    // authentication
+    app.use("/auth", auth_route_1.authRoutes);
     /**
      * Server Activation
      */

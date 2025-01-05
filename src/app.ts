@@ -80,9 +80,6 @@ db.connection()
 
     app.use(errorHandler);
 
-    // authentication
-    app.use("/auth", authRoutes);
-
     app.get("/api", (req: Request, res: Response) => {
       res.send("Express + TypeScript Server");
     });
@@ -102,6 +99,9 @@ db.connection()
     app.use("/api/uploads", uploadRouter);
     // middleware interceptions
     app.use(notFoundHandler);
+
+    // authentication
+    app.use("/auth", authRoutes);
 
     /**
      * Server Activation
