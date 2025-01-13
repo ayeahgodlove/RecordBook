@@ -36,7 +36,6 @@ const authz_middleware_1 = __importDefault(require("./shared/middlewares/authz.m
 const db_postgres_config_1 = require("./infrastructure/database/postgres/db-postgres.config");
 const error_middleware_1 = require("./shared/middlewares/error.middleware");
 const not_found_middleware_1 = require("./shared/middlewares/not-found.middleware");
-const category_route_1 = __importDefault(require("./presentation/routes/category.route"));
 const role_route_1 = __importDefault(require("./presentation/routes/role.route"));
 const auth_route_1 = require("./presentation/routes/auth/auth.route");
 const user_route_1 = __importDefault(require("./presentation/routes/user.route"));
@@ -49,6 +48,9 @@ const attachment_route_1 = __importDefault(require("./presentation/routes/attach
 const meeting_minute_route_1 = __importDefault(require("./presentation/routes/meeting-minute.route"));
 const financial_record_route_1 = __importDefault(require("./presentation/routes/financial-record.route"));
 const asset_route_1 = __importDefault(require("./presentation/routes/asset.route"));
+const income_type_route_1 = __importDefault(require("./presentation/routes/income-type.route"));
+const expense_type_route_1 = __importDefault(require("./presentation/routes/expense-type.route"));
+const record_type_route_1 = __importDefault(require("./presentation/routes/record-type.route"));
 dotenv.config();
 const db = new db_postgres_config_1.PostgresDbConfig();
 /**
@@ -90,10 +92,14 @@ db.connection()
         .use(authz_middleware_1.default.authenticate("session"))
         .use(authz_middleware_1.default.session());
     app.use(error_middleware_1.errorHandler);
+    // authentication
+    app.use("/auth", auth_route_1.authRoutes);
     app.get("/api", (req, res) => {
         res.send("Express + TypeScript Server");
     });
-    app.use("/api/categories", category_route_1.default);
+    app.use("/api/incomeTypes", income_type_route_1.default);
+    app.use("/api/expenseTypes", expense_type_route_1.default);
+    app.use("/api/recordTypes", record_type_route_1.default);
     app.use("/api/roles", role_route_1.default);
     app.use("/api/users", user_route_1.default);
     app.use("/api/branches", branch_route_1.default);
@@ -107,8 +113,6 @@ db.connection()
     app.use("/api/uploads", upload_route_1.default);
     // middleware interceptions
     app.use(not_found_middleware_1.notFoundHandler);
-    // authentication
-    app.use("/auth", auth_route_1.authRoutes);
     /**
      * Server Activation
      */

@@ -28,6 +28,7 @@ const roleMapper = new mapper_1.RoleMapper();
 class UsersController {
     async createUser(req, res, next) {
         const { userRole } = req.body;
+        console.log("userRole: ", userRole);
         const dto = new user_request_dto_1.UserRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
         if (validationErrors.length > 0) {
@@ -41,9 +42,11 @@ class UsersController {
         else {
             try {
                 const userResponse = await userUseCase.createUser(dto.toData());
-                const roleResponse = await roleUseCase.getRoleById(userRole);
+                if (userRole) {
+                    const roleResponse = await roleUseCase.getRoleById(userRole);
+                    await userResponse.$add("roles", [roleResponse]);
+                }
                 // Associate roles with the user
-                await userResponse.$add("roles", [roleResponse]);
                 // Retrieve user roles
                 const userRoles = await userResponse.$get("roles");
                 const rolesDTO = roleMapper.toDTOs(userRoles);
@@ -161,7 +164,7 @@ class UsersController {
             res.json({
                 message: "User Avatar uploaded Successfully!",
                 success: true,
-                data: userResponse.toJSON()
+                data: userResponse.toJSON(),
             });
         }
         catch (error) {

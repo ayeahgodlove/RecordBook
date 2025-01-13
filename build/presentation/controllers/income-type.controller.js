@@ -1,20 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FinancialRecordsController = void 0;
-const financial_record_1 = require("../../domain/models/financial-record");
-const financial_record_usecase_1 = require("../../domain/usecases/financial-record.usecase");
-const financial_record_repository_1 = require("../../data/repositories/impl/financial-record.repository");
+exports.IncomeTypesController = void 0;
+const income_type_1 = require("../../domain/models/income-type");
+const income_type_usecase_1 = require("../../domain/usecases/income-type.usecase");
+const income_type_repository_1 = require("../../data/repositories/impl/income-type.repository");
 const mapper_1 = require("../mappers/mapper");
+const income_request_dto_1 = require("../dtos/income-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
 const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
-const financial_record_request_dto_1 = require("../dtos/financial-record-request.dto");
-const financialRecordRepository = new financial_record_repository_1.FinancialRecordRepository();
-const financialRecordUseCase = new financial_record_usecase_1.FinancialRecordUseCase(financialRecordRepository);
-const financialRecordMapper = new mapper_1.FinancialRecordMapper();
-class FinancialRecordsController {
-    async createFinancialRecord(req, res) {
-        const dto = new financial_record_request_dto_1.FinancialRecordRequestDto(req.body);
+const incomeTypeRepository = new income_type_repository_1.IncomeTypeRepository();
+const incomeTypeUseCase = new income_type_usecase_1.IncomeTypeUseCase(incomeTypeRepository);
+const incomeTypeMapper = new mapper_1.IncomeTypeMapper();
+class IncomeTypesController {
+    async createIncomeType(req, res) {
+        const dto = new income_request_dto_1.IncomeTypeRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
         if (validationErrors.length > 0) {
             res.status(400).json({
@@ -26,15 +26,10 @@ class FinancialRecordsController {
         }
         else {
             try {
-                const financialRecordResponse = await financialRecordUseCase.createFinancialRecord({
-                    ...dto.toData(),
-                    expenseTypeId: req.body.expenseTypeId,
-                    incomeTypeId: req.body.incomeTypeId,
-                    recordTypeId: req.body.recordTypeId
-                });
+                const incomeTypeResponse = await incomeTypeUseCase.createIncomeType(dto.toData());
                 res.status(201).json({
-                    data: financialRecordResponse.toJSON(),
-                    message: "FinancialRecord created Successfully!",
+                    data: incomeTypeResponse.toJSON(),
+                    message: "Income Type created Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -51,9 +46,9 @@ class FinancialRecordsController {
     }
     async getAll(req, res) {
         try {
-            const financialRecordes = await financialRecordUseCase.getAll();
-            const financialRecordesDTO = financialRecordMapper.toDTOs(financialRecordes);
-            res.json(financialRecordesDTO);
+            const incomeTypes = await incomeTypeUseCase.getAll();
+            const incomeTypesDTO = incomeTypeMapper.toDTOs(incomeTypes);
+            res.json(incomeTypesDTO);
         }
         catch (error) {
             res.status(400).json({
@@ -64,16 +59,16 @@ class FinancialRecordsController {
             });
         }
     }
-    async getFinancialRecordById(req, res) {
+    async getIncomeTypeById(req, res) {
         try {
             const id = req.params.id;
-            const financialRecord = await financialRecordUseCase.getFinancialRecordById(id);
-            if (!financialRecord) {
-                throw new not_found_exception_1.NotFoundException("FinancialRecord", id);
+            const incomeType = await incomeTypeUseCase.getIncomeTypeById(id);
+            if (!incomeType) {
+                throw new not_found_exception_1.NotFoundException("IncomeType", id);
             }
-            const financialRecordDTO = financialRecordMapper.toDTO(financialRecord);
+            const incomeTypeDTO = incomeTypeMapper.toDTO(incomeType);
             res.json({
-                data: financialRecordDTO,
+                data: incomeTypeDTO,
                 message: "Success",
                 validationErrors: [],
                 success: true,
@@ -88,8 +83,8 @@ class FinancialRecordsController {
             });
         }
     }
-    async updateFinancialRecord(req, res) {
-        const dto = new financial_record_request_dto_1.FinancialRecordRequestDto(req.body);
+    async updateIncomeType(req, res) {
+        const dto = new income_request_dto_1.IncomeTypeRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
         if (validationErrors.length > 0) {
             res.status(400).json({
@@ -103,15 +98,15 @@ class FinancialRecordsController {
             try {
                 const id = req.params.id;
                 const obj = {
-                    ...financial_record_1.emptyFinancialRecord,
+                    ...income_type_1.emptyIncomeType,
                     ...req.body,
                     id: id,
                 };
-                const updatedFinancialRecord = await financialRecordUseCase.updateFinancialRecord(obj);
-                const financialRecordDto = financialRecordMapper.toDTO(updatedFinancialRecord);
+                const updatedIncomeType = await incomeTypeUseCase.updateIncomeType(obj);
+                const incomeTypeDto = incomeTypeMapper.toDTO(updatedIncomeType);
                 res.json({
-                    data: financialRecordDto,
-                    message: "FinancialRecord Updated Successfully!",
+                    data: incomeTypeDto,
+                    message: "IncomeType Updated Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -126,10 +121,10 @@ class FinancialRecordsController {
             }
         }
     }
-    async deleteFinancialRecord(req, res) {
+    async deleteIncomeType(req, res) {
         try {
             const id = req.params.id;
-            await financialRecordUseCase.deleteFinancialRecord(id);
+            await incomeTypeUseCase.deleteIncomeType(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,
                 validationErrors: [],
@@ -147,4 +142,4 @@ class FinancialRecordsController {
         }
     }
 }
-exports.FinancialRecordsController = FinancialRecordsController;
+exports.IncomeTypesController = IncomeTypesController;

@@ -1,5 +1,5 @@
 "use strict";
-// src/presentation/dtos/financialRecord-request.dto.ts
+// src/presentation/dtos/incomeType-request.dto.ts
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,59 +10,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FinancialRecordRequestDto = void 0;
+exports.IncomeTypeRequestDto = void 0;
 const class_validator_1 = require("class-validator");
-const financial_record_1 = require("../../domain/models/financial-record");
+const income_type_1 = require("../../domain/models/income-type");
 const nanoid_1 = require("nanoid");
-class FinancialRecordRequestDto {
+class IncomeTypeRequestDto {
+    name;
     description;
-    recordDate;
-    amount;
-    createdBy;
     constructor(data) {
+        this.name = data.name;
         this.description = data.description;
-        this.recordDate = data.recordDate;
-        this.amount = data.amount;
-        this.createdBy = data.createdBy;
     }
     toData() {
         return {
-            ...financial_record_1.emptyFinancialRecord,
+            ...income_type_1.emptyIncomeType,
             id: (0, nanoid_1.nanoid)(10),
+            name: this.name,
             description: this.description,
-            createdBy: this.createdBy,
-            amount: this.amount,
-            recordDate: this.recordDate,
         };
     }
     toUpdateData(data) {
         return {
             id: data.id,
+            name: data.name,
             description: data.description,
-            createdBy: data.createdBy,
-            amount: data.amount,
-            recordDate: data.recordDate,
-            incomeTypeId: data.incomeTypeId,
-            expenseTypeId: data.expenseTypeId,
-            recordTypeId: data.recordTypeId,
         };
     }
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Length)(4, 25),
     __metadata("design:type", String)
-], FinancialRecordRequestDto.prototype, "description", void 0);
+], IncomeTypeRequestDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Date)
-], FinancialRecordRequestDto.prototype, "recordDate", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], FinancialRecordRequestDto.prototype, "amount", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], FinancialRecordRequestDto.prototype, "createdBy", void 0);
-exports.FinancialRecordRequestDto = FinancialRecordRequestDto;
+], IncomeTypeRequestDto.prototype, "description", void 0);
+exports.IncomeTypeRequestDto = IncomeTypeRequestDto;

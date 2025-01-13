@@ -1,20 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategoriesController = void 0;
-const category_1 = require("../../domain/models/category");
-const category_usecase_1 = require("../../domain/usecases/category.usecase");
-const category_repository_1 = require("../../data/repositories/impl/category.repository");
+exports.ExpenseTypesController = void 0;
+const expense_type_1 = require("../../domain/models/expense-type");
+const expense_type_usecase_1 = require("../../domain/usecases/expense-type.usecase");
+const expense_type_repository_1 = require("../../data/repositories/impl/expense-type.repository");
 const mapper_1 = require("../mappers/mapper");
-const category_request_dto_1 = require("../dtos/category-request.dto");
+const expense_request_dto_1 = require("../dtos/expense-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
 const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
-const categoryRepository = new category_repository_1.CategoryRepository();
-const categoryUseCase = new category_usecase_1.CategoryUseCase(categoryRepository);
-const categoryMapper = new mapper_1.CategoryMapper();
-class CategoriesController {
-    async createCategory(req, res) {
-        const dto = new category_request_dto_1.CategoryRequestDto(req.body);
+const expenseTypeRepository = new expense_type_repository_1.ExpenseTypeRepository();
+const expenseTypeUseCase = new expense_type_usecase_1.ExpenseTypeUseCase(expenseTypeRepository);
+const expenseTypeMapper = new mapper_1.ExpenseTypeMapper();
+class ExpenseTypesController {
+    async createExpenseType(req, res) {
+        const dto = new expense_request_dto_1.ExpenseTypeRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
         if (validationErrors.length > 0) {
             res.status(400).json({
@@ -26,10 +26,10 @@ class CategoriesController {
         }
         else {
             try {
-                const categoryResponse = await categoryUseCase.createCategory(dto.toData());
+                const expenseTypeResponse = await expenseTypeUseCase.createExpenseType(dto.toData());
                 res.status(201).json({
-                    data: categoryResponse.toJSON(),
-                    message: "Category created Successfully!",
+                    data: expenseTypeResponse.toJSON(),
+                    message: "Expense Type created Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -46,9 +46,9 @@ class CategoriesController {
     }
     async getAll(req, res) {
         try {
-            const categories = await categoryUseCase.getAll();
-            const categoriesDTO = categoryMapper.toDTOs(categories);
-            res.json(categoriesDTO);
+            const expenseTypes = await expenseTypeUseCase.getAll();
+            const expenseTypesDTO = expenseTypeMapper.toDTOs(expenseTypes);
+            res.json(expenseTypesDTO);
         }
         catch (error) {
             res.status(400).json({
@@ -59,16 +59,16 @@ class CategoriesController {
             });
         }
     }
-    async getCategoryById(req, res) {
+    async getExpenseTypeById(req, res) {
         try {
             const id = req.params.id;
-            const category = await categoryUseCase.getCategoryById(id);
-            if (!category) {
-                throw new not_found_exception_1.NotFoundException("Category", id);
+            const expenseType = await expenseTypeUseCase.getExpenseTypeById(id);
+            if (!expenseType) {
+                throw new not_found_exception_1.NotFoundException("ExpenseType", id);
             }
-            const categoryDTO = categoryMapper.toDTO(category);
+            const expenseTypeDTO = expenseTypeMapper.toDTO(expenseType);
             res.json({
-                data: categoryDTO,
+                data: expenseTypeDTO,
                 message: "Success",
                 validationErrors: [],
                 success: true,
@@ -83,8 +83,8 @@ class CategoriesController {
             });
         }
     }
-    async updateCategory(req, res) {
-        const dto = new category_request_dto_1.CategoryRequestDto(req.body);
+    async updateExpenseType(req, res) {
+        const dto = new expense_request_dto_1.ExpenseTypeRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
         if (validationErrors.length > 0) {
             res.status(400).json({
@@ -98,15 +98,15 @@ class CategoriesController {
             try {
                 const id = req.params.id;
                 const obj = {
-                    ...category_1.emptyCategory,
+                    ...expense_type_1.emptyExpenseType,
                     ...req.body,
                     id: id,
                 };
-                const updatedCategory = await categoryUseCase.updateCategory(obj);
-                const categoryDto = categoryMapper.toDTO(updatedCategory);
+                const updatedExpenseType = await expenseTypeUseCase.updateExpenseType(obj);
+                const expenseTypeDto = expenseTypeMapper.toDTO(updatedExpenseType);
                 res.json({
-                    data: categoryDto,
-                    message: "Category Updated Successfully!",
+                    data: expenseTypeDto,
+                    message: "ExpenseType Updated Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -121,10 +121,10 @@ class CategoriesController {
             }
         }
     }
-    async deleteCategory(req, res) {
+    async deleteExpenseType(req, res) {
         try {
             const id = req.params.id;
-            await categoryUseCase.deleteCategory(id);
+            await expenseTypeUseCase.deleteExpenseType(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,
                 validationErrors: [],
@@ -142,4 +142,4 @@ class CategoriesController {
         }
     }
 }
-exports.CategoriesController = CategoriesController;
+exports.ExpenseTypesController = ExpenseTypesController;

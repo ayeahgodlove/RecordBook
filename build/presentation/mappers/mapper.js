@@ -1,21 +1,7 @@
 "use strict";
 // src/presentation/mappers/category-mapper.ts
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RoleMapper = exports.BranchMapper = exports.UserRoleMapper = exports.UserMapper = exports.AttachmentMapper = exports.FinancialRecordMapper = exports.MeetingMinuteMapper = exports.AssetMapper = exports.CategoryMapper = void 0;
-class CategoryMapper {
-    toDTO(category) {
-        const entity = category.toJSON();
-        return entity;
-    }
-    toDTOs(categories) {
-        const _categories = categories.map((category) => {
-            const entity = category.toJSON();
-            return entity;
-        });
-        return _categories;
-    }
-}
-exports.CategoryMapper = CategoryMapper;
+exports.RoleMapper = exports.BranchMapper = exports.UserRoleMapper = exports.RecordTypeMapper = exports.ExpenseTypeMapper = exports.IncomeTypeMapper = exports.UserMapper = exports.AttachmentMapper = exports.FinancialRecordMapper = exports.MeetingMinuteMapper = exports.AssetMapper = void 0;
 class AssetMapper {
     toDTO(asset) {
         const entity = asset.toJSON();
@@ -86,6 +72,48 @@ class UserMapper {
     }
 }
 exports.UserMapper = UserMapper;
+class IncomeTypeMapper {
+    toDTO(incomeType) {
+        const entity = incomeType.toJSON();
+        return entity;
+    }
+    toDTOs(incomeTypes) {
+        const _incomeTypes = incomeTypes.map((incomeType) => {
+            const entity = incomeType.toJSON();
+            return entity;
+        });
+        return _incomeTypes;
+    }
+}
+exports.IncomeTypeMapper = IncomeTypeMapper;
+class ExpenseTypeMapper {
+    toDTO(expenseType) {
+        const entity = expenseType.toJSON();
+        return entity;
+    }
+    toDTOs(expenseTypes) {
+        const _expenseTypes = expenseTypes.map((expenseType) => {
+            const entity = expenseType.toJSON();
+            return entity;
+        });
+        return _expenseTypes;
+    }
+}
+exports.ExpenseTypeMapper = ExpenseTypeMapper;
+class RecordTypeMapper {
+    toDTO(recordType) {
+        const entity = recordType.toJSON();
+        return entity;
+    }
+    toDTOs(recordTypes) {
+        const _recordTypes = recordTypes.map((recordType) => {
+            const entity = recordType.toJSON();
+            return entity;
+        });
+        return _recordTypes;
+    }
+}
+exports.RecordTypeMapper = RecordTypeMapper;
 class UserRoleMapper {
     toDTO(userRole) {
         const entity = userRole.toJSON();

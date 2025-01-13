@@ -12,10 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FinancialRecord = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const user_1 = require("./user");
-const category_1 = require("./category");
+const income_type_1 = require("./income-type");
+const expense_type_1 = require("./expense-type");
+const record_type_1 = require("./record-type");
 let FinancialRecord = class FinancialRecord extends sequelize_typescript_1.Model {
-    categoryId;
-    type;
+    incomeTypeId;
+    expenseTypeId;
+    recordTypeId;
     description;
     amount;
     createdBy;
@@ -31,17 +34,29 @@ __decorate([
     __metadata("design:type", String)
 ], FinancialRecord.prototype, "id", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => category_1.Category),
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], FinancialRecord.prototype, "categoryId", void 0);
-__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => income_type_1.IncomeType),
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(128),
-        allowNull: false,
+        type: sequelize_typescript_1.DataType.STRING(20),
+        allowNull: true,
     }),
     __metadata("design:type", String)
-], FinancialRecord.prototype, "type", void 0);
+], FinancialRecord.prototype, "incomeTypeId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => expense_type_1.ExpenseType),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING(20),
+        allowNull: true,
+    }),
+    __metadata("design:type", String)
+], FinancialRecord.prototype, "expenseTypeId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => record_type_1.RecordType),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING(20),
+        allowNull: true,
+    }),
+    __metadata("design:type", String)
+], FinancialRecord.prototype, "recordTypeId", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.TEXT,
@@ -51,8 +66,9 @@ __decorate([
 ], FinancialRecord.prototype, "description", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.FLOAT,
+        type: sequelize_typescript_1.DataType.DECIMAL(10, 2),
         allowNull: false,
+        defaultValue: 0,
     }),
     __metadata("design:type", Number)
 ], FinancialRecord.prototype, "amount", void 0);

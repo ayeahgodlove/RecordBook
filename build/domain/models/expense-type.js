@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.emptyCategory = void 0;
-exports.emptyCategory = {
+exports.emptyExpenseType = void 0;
+exports.emptyExpenseType = {
     id: "",
     name: "",
+    description: "",
 };

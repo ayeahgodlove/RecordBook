@@ -9,17 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Asset = void 0;
+exports.IncomeType = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const user_1 = require("./user");
-let Asset = class Asset extends sequelize_typescript_1.Model {
+let IncomeType = class IncomeType extends sequelize_typescript_1.Model {
     name;
     description;
-    value;
-    createdBy;
-    acquireDate;
-    status;
-    user;
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -28,54 +22,27 @@ __decorate([
         primaryKey: true,
     }),
     __metadata("design:type", String)
-], Asset.prototype, "id", void 0);
+], IncomeType.prototype, "id", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(128),
+        type: sequelize_typescript_1.DataType.STRING(50),
         allowNull: false,
+        unique: true,
     }),
     __metadata("design:type", String)
-], Asset.prototype, "name", void 0);
+], IncomeType.prototype, "name", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.TEXT,
         allowNull: false,
     }),
     __metadata("design:type", String)
-], Asset.prototype, "description", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.DECIMAL(10, 2),
-        allowNull: false,
-        defaultValue: 0,
-    }),
-    __metadata("design:type", Number)
-], Asset.prototype, "value", void 0);
-__decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => user_1.User),
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], Asset.prototype, "createdBy", void 0);
-__decorate([
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Date)
-], Asset.prototype, "acquireDate", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.ENUM("Available", "Assigned", "Decommissioned"),
-        allowNull: false,
-    }),
-    __metadata("design:type", String)
-], Asset.prototype, "status", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => user_1.User),
-    __metadata("design:type", user_1.User)
-], Asset.prototype, "user", void 0);
-Asset = __decorate([
+], IncomeType.prototype, "description", void 0);
+IncomeType = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,
         paranoid: true,
-        tableName: "asset",
+        tableName: "income_type",
     })
-], Asset);
-exports.Asset = Asset;
+], IncomeType);
+exports.IncomeType = IncomeType;

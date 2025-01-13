@@ -9,10 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Category = void 0;
+exports.ExpenseType = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-let Category = class Category extends sequelize_typescript_1.Model {
+let ExpenseType = class ExpenseType extends sequelize_typescript_1.Model {
     name;
+    description;
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -21,7 +22,7 @@ __decorate([
         primaryKey: true,
     }),
     __metadata("design:type", String)
-], Category.prototype, "id", void 0);
+], ExpenseType.prototype, "id", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(50),
@@ -29,12 +30,19 @@ __decorate([
         unique: true,
     }),
     __metadata("design:type", String)
-], Category.prototype, "name", void 0);
-Category = __decorate([
+], ExpenseType.prototype, "name", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.TEXT,
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], ExpenseType.prototype, "description", void 0);
+ExpenseType = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,
         paranoid: true,
-        tableName: "category",
+        tableName: "expense_type",
     })
-], Category);
-exports.Category = Category;
+], ExpenseType);
+exports.ExpenseType = ExpenseType;

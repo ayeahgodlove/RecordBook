@@ -21,7 +21,6 @@ class UserRequestDto {
     phoneNumber;
     password;
     constructor(data) {
-        this.username = data.username;
         this.fullname = data.fullname;
         this.username = data.username;
         this.email = data.email;
@@ -54,7 +53,7 @@ class UserRequestDto {
             updatedAt: data.updatedAt,
             authStrategy: data.authStrategy,
             avatar: data.avatar,
-            verified: data.verified
+            verified: data.verified,
         };
     }
 }

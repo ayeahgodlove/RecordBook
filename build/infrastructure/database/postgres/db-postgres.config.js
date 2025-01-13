@@ -39,7 +39,9 @@ const asset_1 = require("../../../data/entities/asset");
 const attachment_1 = require("../../../data/entities/attachment");
 const financial_record_1 = require("../../../data/entities/financial-record");
 const meeting_minute_1 = require("../../../data/entities/meeting-minute");
-const category_1 = require("../../../data/entities/category");
+const income_type_1 = require("../../../data/entities/income-type");
+const expense_type_1 = require("../../../data/entities/expense-type");
+const record_type_1 = require("../../../data/entities/record-type");
 dotenv.config();
 class PostgresDbConfig {
     _sequelize;
@@ -55,7 +57,9 @@ class PostgresDbConfig {
             host: process.env.HOST,
             dialect: "postgres",
             models: [
-                category_1.Category,
+                income_type_1.IncomeType,
+                expense_type_1.ExpenseType,
+                record_type_1.RecordType,
                 user_1.User,
                 role_1.Role,
                 user_role_1.UserRole,
