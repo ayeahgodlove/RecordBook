@@ -1,11 +1,11 @@
 import { Table, Model, Column, DataType } from "sequelize-typescript";
-import { ICategory } from "../../domain/models/category";
+import { IExpenseType } from "../../domain/models/expense-type";
 @Table({
   timestamps: true,
   paranoid: true,
-  tableName: "category",
+  tableName: "expense_type",
 })
-export class Category extends Model<ICategory> {
+export class ExpenseType extends Model<IExpenseType> {
   @Column({
     type: DataType.STRING(20),
     allowNull: false,
@@ -19,4 +19,9 @@ export class Category extends Model<ICategory> {
     unique: true,
   })
   name!: string;
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  description!: string;
 }

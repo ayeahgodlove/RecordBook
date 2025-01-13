@@ -1,29 +1,27 @@
 import { Request, Response } from "express";
 import {
-  IFinancialRecord,
-  IFinancialRecordResponse,
-  emptyFinancialRecord,
-} from "../../domain/models/financial-record";
-import { FinancialRecordUseCase } from "../../domain/usecases/financial-record.usecase";
-import { FinancialRecordRepository } from "../../data/repositories/impl/financial-record.repository";
-import { FinancialRecordMapper } from "../mappers/mapper";
+  IRecordType,
+  IRecordTypeResponse,
+  emptyRecordType,
+} from "../../domain/models/record-type";
+import { RecordTypeUseCase } from "../../domain/usecases/record-type.usecase";
+import { RecordTypeRepository } from "../../data/repositories/impl/record-type.repository";
+import { RecordTypeMapper } from "../mappers/mapper";
+import { RecordTypeRequestDto } from "../dtos/record-request.dto";
 import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
-import { FinancialRecordRequestDto } from "../dtos/financial-record-request.dto";
 
-const financialRecordRepository = new FinancialRecordRepository();
-const financialRecordUseCase = new FinancialRecordUseCase(
-  financialRecordRepository
-);
-const financialRecordMapper = new FinancialRecordMapper();
+const recordTypeRepository = new RecordTypeRepository();
+const recordTypeUseCase = new RecordTypeUseCase(recordTypeRepository);
+const recordTypeMapper = new RecordTypeMapper();
 
-export class FinancialRecordsController {
-  async createFinancialRecord(
+export class RecordTypesController {
+  async createRecordType(
     req: Request,
-    res: Response<IFinancialRecordResponse>
+    res: Response<IRecordTypeResponse>
   ): Promise<void> {
-    const dto = new FinancialRecordRequestDto(req.body);
+    const dto = new RecordTypeRequestDto(req.body);
     const validationErrors = await validate(dto);
 
     if (validationErrors.length > 0) {
@@ -35,17 +33,13 @@ export class FinancialRecordsController {
       });
     } else {
       try {
-        const financialRecordResponse =
-          await financialRecordUseCase.createFinancialRecord({
-            ...dto.toData(),
-            expenseTypeId: req.body.expenseTypeId,
-            incomeTypeId: req.body.incomeTypeId,
-            recordTypeId: req.body.recordTypeId
-          });
+        const recordTypeResponse = await recordTypeUseCase.createRecordType(
+          dto.toData()
+        );
 
         res.status(201).json({
-          data: financialRecordResponse.toJSON<IFinancialRecord>(),
-          message: "FinancialRecord created Successfully!",
+          data: recordTypeResponse.toJSON<IRecordType>(),
+          message: "Record Type created Successfully!",
           validationErrors: [],
           success: true,
         });
@@ -62,11 +56,10 @@ export class FinancialRecordsController {
 
   async getAll(req: Request, res: Response<any>): Promise<void> {
     try {
-      const financialRecordes = await financialRecordUseCase.getAll();
-      const financialRecordesDTO =
-        financialRecordMapper.toDTOs(financialRecordes);
+      const recordTypes = await recordTypeUseCase.getAll();
+      const recordTypesDTO = recordTypeMapper.toDTOs(recordTypes);
 
-      res.json(financialRecordesDTO);
+      res.json(recordTypesDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -77,21 +70,20 @@ export class FinancialRecordsController {
     }
   }
 
-  async getFinancialRecordById(
+  async getRecordTypeById(
     req: Request,
-    res: Response<IFinancialRecordResponse>
+    res: Response<IRecordTypeResponse>
   ): Promise<void> {
     try {
       const id = req.params.id;
 
-      const financialRecord =
-        await financialRecordUseCase.getFinancialRecordById(id);
-      if (!financialRecord) {
-        throw new NotFoundException("FinancialRecord", id);
+      const recordType = await recordTypeUseCase.getRecordTypeById(id);
+      if (!recordType) {
+        throw new NotFoundException("RecordType", id);
       }
-      const financialRecordDTO = financialRecordMapper.toDTO(financialRecord);
+      const recordTypeDTO = recordTypeMapper.toDTO(recordType);
       res.json({
-        data: financialRecordDTO,
+        data: recordTypeDTO,
         message: "Success",
         validationErrors: [],
         success: true,
@@ -106,11 +98,11 @@ export class FinancialRecordsController {
     }
   }
 
-  async updateFinancialRecord(
+  async updateRecordType(
     req: Request,
-    res: Response<IFinancialRecordResponse>
+    res: Response<IRecordTypeResponse>
   ): Promise<void> {
-    const dto = new FinancialRecordRequestDto(req.body);
+    const dto = new RecordTypeRequestDto(req.body);
     const validationErrors = await validate(dto);
 
     if (validationErrors.length > 0) {
@@ -124,20 +116,17 @@ export class FinancialRecordsController {
       try {
         const id = req.params.id;
 
-        const obj: IFinancialRecord = {
-          ...emptyFinancialRecord,
+        const obj: IRecordType = {
+          ...emptyRecordType,
           ...req.body,
           id: id,
         };
-        const updatedFinancialRecord =
-          await financialRecordUseCase.updateFinancialRecord(obj);
-        const financialRecordDto = financialRecordMapper.toDTO(
-          updatedFinancialRecord
-        );
+        const updatedRecordType = await recordTypeUseCase.updateRecordType(obj);
+        const recordTypeDto = recordTypeMapper.toDTO(updatedRecordType);
 
         res.json({
-          data: financialRecordDto,
-          message: "FinancialRecord Updated Successfully!",
+          data: recordTypeDto,
+          message: "RecordType Updated Successfully!",
           validationErrors: [],
           success: true,
         });
@@ -152,14 +141,14 @@ export class FinancialRecordsController {
     }
   }
 
-  async deleteFinancialRecord(
+  async deleteRecordType(
     req: Request,
-    res: Response<IFinancialRecordResponse>
+    res: Response<IRecordTypeResponse>
   ): Promise<void> {
     try {
       const id = req.params.id;
 
-      await financialRecordUseCase.deleteFinancialRecord(id);
+      await recordTypeUseCase.deleteRecordType(id);
 
       res.status(204).json({
         message: `Operation successfully completed!`,

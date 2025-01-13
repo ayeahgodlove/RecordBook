@@ -8,7 +8,9 @@ import {
 } from "sequelize-typescript";
 import { IFinancialRecord } from "../../domain/models/financial-record";
 import { User } from "./user";
-import { Category } from "./category";
+import { IncomeType } from "./income-type";
+import { ExpenseType } from "./expense-type";
+import { RecordType } from "./record-type";
 
 @Table({
   timestamps: true,
@@ -23,15 +25,26 @@ export class FinancialRecord extends Model<IFinancialRecord> {
   })
   declare id?: string;
 
-  @ForeignKey(() => Category)
-  @Column
-  categoryId!: string;
-
+  @ForeignKey(() => IncomeType)
   @Column({
-    type: DataType.STRING(128),
-    allowNull: false,
+    type: DataType.STRING(20),
+    allowNull: true,
   })
-  type!: string;
+  incomeTypeId!: string;
+
+  @ForeignKey(() => ExpenseType)
+  @Column({
+    type: DataType.STRING(20),
+    allowNull: true,
+  })
+  expenseTypeId!: string;
+
+  @ForeignKey(() => RecordType)
+  @Column({
+    type: DataType.STRING(20),
+    allowNull: true,
+  })
+  recordTypeId!: string;
 
   @Column({
     type: DataType.TEXT,

@@ -1,11 +1,9 @@
 // src/presentation/mappers/category-mapper.ts
 
 import { Branch } from "../../data/entities/branch";
-import { Category } from "../../data/entities/category";
 import { Role } from "../../data/entities/role";
 import { User } from "../../data/entities/user";
 import { IBranch } from "../../domain/models/branch";
-import { ICategory } from "../../domain/models/category";
 import { IRole } from "../../domain/models/role";
 import { IUser } from "../../domain/models/user";
 import { UserRole } from "../../data/entities/user-role";
@@ -18,20 +16,12 @@ import { FinancialRecord } from "../../data/entities/financial-record";
 import { IFinancialRecord } from "../../domain/models/financial-record";
 import { Attachment } from "../../data/entities/attachment";
 import { IAttachment } from "../../domain/models/attachment";
-
-export class CategoryMapper {
-  toDTO(category: Category): ICategory {
-    const entity = category.toJSON<ICategory>();
-    return entity;
-  }
-  toDTOs(categories: Category[]): ICategory[] {
-    const _categories = categories.map((category) => {
-      const entity = category.toJSON<ICategory>();
-      return entity;
-    });
-    return _categories;
-  }
-}
+import { IIncomeType } from "../../domain/models/income-type";
+import { IncomeType } from "../../data/entities/income-type";
+import { ExpenseType } from "../../data/entities/expense-type";
+import { IExpenseType } from "../../domain/models/expense-type";
+import { RecordType } from "../../data/entities/record-type";
+import { IRecordType } from "../../domain/models/record-type";
 
 export class AssetMapper {
   toDTO(asset: Asset): IAsset {
@@ -102,6 +92,50 @@ export class UserMapper {
     return _users;
   }
 }
+
+export class IncomeTypeMapper {
+  toDTO(incomeType: IncomeType): IIncomeType {
+    const entity = incomeType.toJSON<IIncomeType>();
+    return entity;
+  }
+  toDTOs(incomeTypes: IncomeType[]): IIncomeType[] {
+    const _incomeTypes = incomeTypes.map((incomeType) => {
+      const entity = incomeType.toJSON<IIncomeType>();
+      return entity;
+    });
+    return _incomeTypes;
+  }
+}
+
+export class ExpenseTypeMapper {
+  toDTO(expenseType: ExpenseType): IExpenseType {
+    const entity = expenseType.toJSON<IExpenseType>();
+    return entity;
+  }
+  toDTOs(expenseTypes: ExpenseType[]): IExpenseType[] {
+    const _expenseTypes = expenseTypes.map((expenseType) => {
+      const entity = expenseType.toJSON<IExpenseType>();
+      return entity;
+    });
+    return _expenseTypes;
+  }
+}
+
+export class RecordTypeMapper {
+  toDTO(recordType: RecordType): IRecordType {
+    const entity = recordType.toJSON<IRecordType>();
+    return entity;
+  }
+  toDTOs(recordTypes: RecordType[]): IRecordType[] {
+    const _recordTypes = recordTypes.map((recordType) => {
+      const entity = recordType.toJSON<IRecordType>();
+      return entity;
+    });
+    return _recordTypes;
+  }
+}
+
+
 
 export class UserRoleMapper {
   toDTO(userRole: UserRole): IUserRole {

@@ -15,7 +15,9 @@ import { Asset } from "../../../data/entities/asset";
 import { Attachment } from "../../../data/entities/attachment";
 import { FinancialRecord } from "../../../data/entities/financial-record";
 import { MeetingMinute } from "../../../data/entities/meeting-minute";
-import { Category } from "../../../data/entities/category";
+import { IncomeType } from "../../../data/entities/income-type";
+import { ExpenseType } from "../../../data/entities/expense-type";
+import { RecordType } from "../../../data/entities/record-type";
 
 dotenv.config();
 
@@ -33,7 +35,9 @@ export class PostgresDbConfig {
       host: process.env.HOST,
       dialect: "postgres",
       models: [
-        Category,
+        IncomeType,
+        ExpenseType,
+        RecordType,
         User,
         Role,
         UserRole,

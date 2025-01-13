@@ -1,27 +1,27 @@
 import { Request, Response } from "express";
 import {
-  ICategory,
-  ICategoryResponse,
-  emptyCategory,
-} from "../../domain/models/category";
-import { CategoryUseCase } from "../../domain/usecases/category.usecase";
-import { CategoryRepository } from "../../data/repositories/impl/category.repository";
-import { CategoryMapper } from "../mappers/mapper";
-import { CategoryRequestDto } from "../dtos/category-request.dto";
+  IExpenseType,
+  IExpenseTypeResponse,
+  emptyExpenseType,
+} from "../../domain/models/expense-type";
+import { ExpenseTypeUseCase } from "../../domain/usecases/expense-type.usecase";
+import { ExpenseTypeRepository } from "../../data/repositories/impl/expense-type.repository";
+import { ExpenseTypeMapper } from "../mappers/mapper";
+import { ExpenseTypeRequestDto } from "../dtos/expense-request.dto";
 import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
 
-const categoryRepository = new CategoryRepository();
-const categoryUseCase = new CategoryUseCase(categoryRepository);
-const categoryMapper = new CategoryMapper();
+const expenseTypeRepository = new ExpenseTypeRepository();
+const expenseTypeUseCase = new ExpenseTypeUseCase(expenseTypeRepository);
+const expenseTypeMapper = new ExpenseTypeMapper();
 
-export class CategoriesController {
-  async createCategory(
+export class ExpenseTypesController {
+  async createExpenseType(
     req: Request,
-    res: Response<ICategoryResponse>
+    res: Response<IExpenseTypeResponse>
   ): Promise<void> {
-    const dto = new CategoryRequestDto(req.body);
+    const dto = new ExpenseTypeRequestDto(req.body);
     const validationErrors = await validate(dto);
 
     if (validationErrors.length > 0) {
@@ -33,13 +33,13 @@ export class CategoriesController {
       });
     } else {
       try {
-        const categoryResponse = await categoryUseCase.createCategory(
+        const expenseTypeResponse = await expenseTypeUseCase.createExpenseType(
           dto.toData()
         );
 
         res.status(201).json({
-          data: categoryResponse.toJSON<ICategory>(),
-          message: "Category created Successfully!",
+          data: expenseTypeResponse.toJSON<IExpenseType>(),
+          message: "Expense Type created Successfully!",
           validationErrors: [],
           success: true,
         });
@@ -56,10 +56,10 @@ export class CategoriesController {
 
   async getAll(req: Request, res: Response<any>): Promise<void> {
     try {
-      const categories = await categoryUseCase.getAll();
-      const categoriesDTO = categoryMapper.toDTOs(categories);
+      const expenseTypes = await expenseTypeUseCase.getAll();
+      const expenseTypesDTO = expenseTypeMapper.toDTOs(expenseTypes);
 
-      res.json(categoriesDTO);
+      res.json(expenseTypesDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -70,20 +70,20 @@ export class CategoriesController {
     }
   }
 
-  async getCategoryById(
+  async getExpenseTypeById(
     req: Request,
-    res: Response<ICategoryResponse>
+    res: Response<IExpenseTypeResponse>
   ): Promise<void> {
     try {
       const id = req.params.id;
 
-      const category = await categoryUseCase.getCategoryById(id);
-      if (!category) {
-        throw new NotFoundException("Category", id);
+      const expenseType = await expenseTypeUseCase.getExpenseTypeById(id);
+      if (!expenseType) {
+        throw new NotFoundException("ExpenseType", id);
       }
-      const categoryDTO = categoryMapper.toDTO(category);
+      const expenseTypeDTO = expenseTypeMapper.toDTO(expenseType);
       res.json({
-        data: categoryDTO,
+        data: expenseTypeDTO,
         message: "Success",
         validationErrors: [],
         success: true,
@@ -98,11 +98,11 @@ export class CategoriesController {
     }
   }
 
-  async updateCategory(
+  async updateExpenseType(
     req: Request,
-    res: Response<ICategoryResponse>
+    res: Response<IExpenseTypeResponse>
   ): Promise<void> {
-    const dto = new CategoryRequestDto(req.body);
+    const dto = new ExpenseTypeRequestDto(req.body);
     const validationErrors = await validate(dto);
 
     if (validationErrors.length > 0) {
@@ -116,17 +116,19 @@ export class CategoriesController {
       try {
         const id = req.params.id;
 
-        const obj: ICategory = {
-          ...emptyCategory,
+        const obj: IExpenseType = {
+          ...emptyExpenseType,
           ...req.body,
           id: id,
         };
-        const updatedCategory = await categoryUseCase.updateCategory(obj);
-        const categoryDto = categoryMapper.toDTO(updatedCategory);
+        const updatedExpenseType = await expenseTypeUseCase.updateExpenseType(
+          obj
+        );
+        const expenseTypeDto = expenseTypeMapper.toDTO(updatedExpenseType);
 
         res.json({
-          data: categoryDto,
-          message: "Category Updated Successfully!",
+          data: expenseTypeDto,
+          message: "ExpenseType Updated Successfully!",
           validationErrors: [],
           success: true,
         });
@@ -141,14 +143,14 @@ export class CategoriesController {
     }
   }
 
-  async deleteCategory(
+  async deleteExpenseType(
     req: Request,
-    res: Response<ICategoryResponse>
+    res: Response<IExpenseTypeResponse>
   ): Promise<void> {
     try {
       const id = req.params.id;
 
-      await categoryUseCase.deleteCategory(id);
+      await expenseTypeUseCase.deleteExpenseType(id);
 
       res.status(204).json({
         message: `Operation successfully completed!`,

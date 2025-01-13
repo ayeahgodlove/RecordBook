@@ -28,7 +28,6 @@ export class UserRequestDto {
   password: string;
 
   constructor(data: IUser) {
-    this.username = data.username;
     this.fullname = data.fullname;
     this.username = data.username;
     this.email = data.email;
@@ -63,7 +62,7 @@ export class UserRequestDto {
       updatedAt: data.updatedAt,
       authStrategy: data.authStrategy,
       avatar: data.avatar,
-      verified: data.verified
+      verified: data.verified,
     };
   }
 }

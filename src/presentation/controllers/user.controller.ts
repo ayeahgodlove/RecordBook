@@ -21,7 +21,7 @@ const userUseCase = new UserUseCase(userRepository);
 const roleUseCase = new RoleUseCase(roleRepository);
 const userMapper = new UserMapper();
 const roleMapper = new RoleMapper();
- 
+
 export class UsersController {
   async createUser(
     req: Request,
@@ -29,6 +29,7 @@ export class UsersController {
     next: any
   ): Promise<void> {
     const { userRole } = req.body;
+    console.log("userRole: ", userRole);
 
     const dto = new UserRequestDto(req.body);
     const validationErrors = await validate(dto);
@@ -43,10 +44,11 @@ export class UsersController {
     } else {
       try {
         const userResponse = await userUseCase.createUser(dto.toData());
-        const roleResponse = await roleUseCase.getRoleById(userRole);
-
+        if (userRole) {
+          const roleResponse = await roleUseCase.getRoleById(userRole);
+          await userResponse.$add("roles", [roleResponse!]);
+        }
         // Associate roles with the user
-        await userResponse.$add("roles", [roleResponse!]);
 
         // Retrieve user roles
         const userRoles = await userResponse.$get("roles");
@@ -59,7 +61,7 @@ export class UsersController {
 
         const activationToken = createActivationToken(user);
         const activationUrl = `${process.env.APP_URL}/activation/${activationToken}`;
-        
+
         await sendRegistrationMail(user.email, activationUrl);
         res.status(201).json({
           data: {
@@ -170,12 +172,12 @@ export class UsersController {
     const { filename } = req.file as Express.Multer.File;
 
     try {
-      const userResponse =  await userUseCase.updateAvatar(user.id, filename);
+      const userResponse = await userUseCase.updateAvatar(user.id, filename);
 
       res.json({
         message: "User Avatar uploaded Successfully!",
         success: true,
-        data: userResponse.toJSON<IUser>()
+        data: userResponse.toJSON<IUser>(),
       });
     } catch (error: any) {
       res.status(400).json({

@@ -10,7 +10,6 @@ import Passport from "./shared/middlewares/authz.middleware";
 import { PostgresDbConfig } from "./infrastructure/database/postgres/db-postgres.config";
 import { errorHandler } from "./shared/middlewares/error.middleware";
 import { notFoundHandler } from "./shared/middlewares/not-found.middleware";
-import categoryRouter from "./presentation/routes/category.route";
 import roleRouter from "./presentation/routes/role.route";
 import { authRoutes } from "./presentation/routes/auth/auth.route";
 import userRouter from "./presentation/routes/user.route";
@@ -25,6 +24,9 @@ import attachmentRouter from "./presentation/routes/attachment.route";
 import meetingMinuteRouter from "./presentation/routes/meeting-minute.route";
 import financialRecordRouter from "./presentation/routes/financial-record.route";
 import assetRouter from "./presentation/routes/asset.route";
+import incomeTypeRouter from "./presentation/routes/income-type.route";
+import expenseTypeRouter from "./presentation/routes/expense-type.route";
+import recordTypeRouter from "./presentation/routes/record-type.route";
 
 dotenv.config();
 const db = new PostgresDbConfig();
@@ -87,7 +89,10 @@ db.connection()
       res.send("Express + TypeScript Server");
     });
 
-    app.use("/api/categories", categoryRouter);
+    app.use("/api/incomeTypes", incomeTypeRouter);
+    app.use("/api/expenseTypes", expenseTypeRouter);
+    app.use("/api/recordTypes", recordTypeRouter);
+
     app.use("/api/roles", roleRouter);
     app.use("/api/users", userRouter);
     app.use("/api/branches", branchRouter);
